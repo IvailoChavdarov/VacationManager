@@ -12,5 +12,8 @@ namespace VacationManager.Models
         [Required]
         [MaxLength(70)]
         public string LastName { get; set; }
+
+        public int TeamId { get; set; }
+        public Team Team { get; set; }
     }
 }
