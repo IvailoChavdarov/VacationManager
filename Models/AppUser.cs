@@ -15,5 +15,10 @@ namespace VacationManager.Models
 
         public int TeamId { get; set; }
         public Team Team { get; set; }
+
+        public int? TeamLedId { get; set; }
+        public Team TeamLed { get; set; }
+
+        public IEnumerable<Holiday> RequestedHolidays { get; set; } 
     }
 }

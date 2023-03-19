@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VacationManager.Data;
 
@@ -11,9 +12,10 @@ using VacationManager.Data;
 namespace VacationManager.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230319074238_addedProjectsTableAndConnections")]
+    partial class addedProjectsTableAndConnections
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,26 +53,26 @@ namespace VacationManager.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e2995e9e-640a-4716-b961-8e8a4a3004ba",
-                            ConcurrencyStamp = "9315bc14-d311-45ae-90fa-8c07bd99111f",
+                            Id = "481e9326-ebc3-4b09-b90f-9932e411cf9d",
+                            ConcurrencyStamp = "a972173c-cc60-47ab-8c60-cd91f6a74ce6",
                             Name = "CEO"
                         },
                         new
                         {
-                            Id = "e13a42bc-e8be-48b3-affc-2cd8d99b8909",
-                            ConcurrencyStamp = "1fd21d8f-efd3-45b0-affa-41ff11dc5442",
+                            Id = "e1295894-7290-4197-aebd-123fe790d6c5",
+                            ConcurrencyStamp = "cce9b480-95b9-457f-8b98-ad8572b31642",
                             Name = "Developer"
                         },
                         new
                         {
-                            Id = "8e72b57c-0b3e-4c89-83dd-7407e320e119",
-                            ConcurrencyStamp = "60449ae8-46d9-4111-aa77-5fd8910acb99",
+                            Id = "e5e80295-f8e4-4999-b8cf-987045170b53",
+                            ConcurrencyStamp = "4563f1a0-1e78-4e0a-a686-b3e61ffdc805",
                             Name = "Team Lead"
                         },
                         new
                         {
-                            Id = "3b9761e6-ab04-4d39-a949-6abe8ff7033e",
-                            ConcurrencyStamp = "1df45342-07e7-4acf-8904-9be38871279f",
+                            Id = "568fbee6-b24c-4a20-b042-28dc822ef3ae",
+                            ConcurrencyStamp = "cfd9eb9c-0da0-43bf-a09a-76a044b5baaa",
                             Name = "Unassigned"
                         });
                 });
@@ -256,40 +258,6 @@ namespace VacationManager.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("VacationManager.Models.Holiday", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("DateOfRequest")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("date");
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsHalfDay")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("RequesterId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("date");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RequesterId");
-
-                    b.ToTable("Holidays");
-                });
-
             modelBuilder.Entity("VacationManager.Models.Project", b =>
                 {
                     b.Property<int>("Id")
@@ -418,17 +386,6 @@ namespace VacationManager.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("VacationManager.Models.Holiday", b =>
-                {
-                    b.HasOne("VacationManager.Models.AppUser", "Requester")
-                        .WithMany("RequestedHolidays")
-                        .HasForeignKey("RequesterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Requester");
-                });
-
             modelBuilder.Entity("VacationManager.Models.Team", b =>
                 {
                     b.HasOne("VacationManager.Models.Project", "Project")
@@ -468,11 +425,6 @@ namespace VacationManager.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Members");
-                });
-
-            modelBuilder.Entity("VacationManager.Models.AppUser", b =>
-                {
-                    b.Navigation("RequestedHolidays");
                 });
 #pragma warning restore 612, 618
         }
