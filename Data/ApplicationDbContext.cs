@@ -36,6 +36,10 @@ namespace VacationManager.Data
                 .HasOne(holiday => holiday.Requester)
                 .WithMany(requester => requester.RequestedHolidays);
 
+            modelBuilder.Entity<Holiday>()
+                .Property(holiday => holiday.PatientNote)
+                .IsRequired(false);
+
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole("CEO"),
                 new IdentityRole("Developer"),

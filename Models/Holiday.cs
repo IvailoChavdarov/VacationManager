@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using VacationManager.Enums;
 
 namespace VacationManager.Models
 {
@@ -27,6 +28,10 @@ namespace VacationManager.Models
 
         [Required]
         public bool IsApproved { get;set; }
+
+        public HolidayType Type { get; set; }
+
+        public string? PatientNote { get; set; }
 
         [Required]
         public string RequesterId { get; set; }
