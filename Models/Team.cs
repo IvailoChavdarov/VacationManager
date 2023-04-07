@@ -15,7 +15,7 @@ namespace VacationManager.Models
 
         public string LeaderId { get; set; }
 
-        public int ProjectId { get; set; }
+        public int? ProjectId { get; set; }
 
         public AppUser Leader { get; set; }
 

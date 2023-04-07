@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VacationManager.Data;
 
@@ -11,9 +12,10 @@ using VacationManager.Data;
 namespace VacationManager.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230319092504_fixedUserTeamNullability")]
+    partial class fixedUserTeamNullability
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,26 +53,26 @@ namespace VacationManager.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fd8c0f83-d3a2-44da-b8bd-090a39db315b",
-                            ConcurrencyStamp = "d636cdb8-5f21-44aa-bf27-60e527cb6661",
+                            Id = "3676d4af-cef8-4825-994d-33954b06d777",
+                            ConcurrencyStamp = "11773fb4-9f9e-4dd5-b85a-9ab42a7e0003",
                             Name = "CEO"
                         },
                         new
                         {
-                            Id = "3fcce6c1-9529-4bec-82ff-f6e1874f67e9",
-                            ConcurrencyStamp = "1c7ab240-de7d-4829-b8ed-18914bb75c8c",
+                            Id = "37638add-a853-4537-aa1a-55473c03a77e",
+                            ConcurrencyStamp = "d1a09706-aff7-479b-8669-a3c9b2e01ec1",
                             Name = "Developer"
                         },
                         new
                         {
-                            Id = "b032e1f3-302d-4347-b005-1f6f26cb9b06",
-                            ConcurrencyStamp = "ac9344aa-29f1-48dc-85a6-424f372e5159",
+                            Id = "18a74abf-90dc-4295-ba4e-0671e6137918",
+                            ConcurrencyStamp = "d6516fc8-92df-47f7-ae23-f1877cd963e7",
                             Name = "Team Lead"
                         },
                         new
                         {
-                            Id = "c143bff1-7425-41b7-a78d-b12d713b4f9b",
-                            ConcurrencyStamp = "6d38db46-a7a1-43fc-bc13-6a7f43c09262",
+                            Id = "0f4de7f2-62b6-48cb-a85c-c89037ae5041",
+                            ConcurrencyStamp = "23670cc4-4d51-4dd3-aa39-60d3b8db50bb",
                             Name = "Unassigned"
                         });
                 });
@@ -241,6 +243,7 @@ namespace VacationManager.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("TeamId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("TeamLedId")
@@ -350,7 +353,7 @@ namespace VacationManager.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("ProjectId")
+                    b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -416,7 +419,8 @@ namespace VacationManager.Data.Migrations
                     b.HasOne("VacationManager.Models.Team", "Team")
                         .WithMany("Members")
                         .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("VacationManager.Models.Team", "TeamLed")
                         .WithOne("Leader")
@@ -442,7 +446,9 @@ namespace VacationManager.Data.Migrations
                 {
                     b.HasOne("VacationManager.Models.Project", "Project")
                         .WithMany("TeamsAtWork")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Project");
                 });

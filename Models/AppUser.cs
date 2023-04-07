@@ -13,7 +13,7 @@ namespace VacationManager.Models
         [MaxLength(70)]
         public string LastName { get; set; }
 
-        public int TeamId { get; set; }
+        public int? TeamId { get; set; }
         public Team Team { get; set; }
 
         public int? TeamLedId { get; set; }

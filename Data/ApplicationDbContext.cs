@@ -6,7 +6,7 @@ using VacationManager.Models;
 
 namespace VacationManager.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -20,7 +20,7 @@ namespace VacationManager.Data
             modelBuilder.Entity<AppUser>()
                 .HasOne(user => user.Team)
                 .WithMany(team => team.Members)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Team>()
                 .HasOne(team => team.Leader)
@@ -30,7 +30,8 @@ namespace VacationManager.Data
             modelBuilder.Entity<Team>()
                 .HasOne(team => team.Project)
                 .WithMany(project => project.TeamsAtWork)
-                .HasForeignKey(team=>team.ProjectId);
+                .HasForeignKey(team=>team.ProjectId)
+                .OnDelete(DeleteBehavior.ClientSetNull); ;
 
             modelBuilder.Entity<Holiday>()
                 .HasOne(holiday => holiday.Requester)
@@ -38,6 +39,14 @@ namespace VacationManager.Data
 
             modelBuilder.Entity<Holiday>()
                 .Property(holiday => holiday.PatientNote)
+                .IsRequired(false);
+
+            modelBuilder.Entity<AppUser>()
+                .Property(user => user.TeamId)
+                .IsRequired(false);
+
+            modelBuilder.Entity<Team>()
+                .Property(team => team.ProjectId)
                 .IsRequired(false);
 
             modelBuilder.Entity<IdentityRole>().HasData(
