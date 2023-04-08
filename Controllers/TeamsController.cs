@@ -82,6 +82,8 @@ namespace VacationManager.Controllers
             }
 
             userToAdd.TeamId = data.TeamId;
+            await _userManager.RemoveFromRoleAsync(userToAdd, "Unassigned");
+            await _userManager.AddToRoleAsync(userToAdd, "Developer");
 
             await _db.SaveChangesAsync();
 
@@ -101,6 +103,10 @@ namespace VacationManager.Controllers
             }
 
             userToRemove.TeamId = null;
+
+            await _userManager.RemoveFromRoleAsync(userToRemove, "Developer");
+            await _userManager.AddToRoleAsync(userToRemove, "Unassigned");
+
             await _db.SaveChangesAsync();
 
             return RedirectToAction("Details", new { id = teamId });
@@ -133,7 +139,6 @@ namespace VacationManager.Controllers
             await _db.SaveChangesAsync();
 
             teamLeader.TeamId = data.TeamToCreate.Id;
-
 
             await _db.SaveChangesAsync();
 
@@ -204,6 +209,8 @@ namespace VacationManager.Controllers
                 {
                     await _userManager.RemoveFromRoleAsync(oldTeamLead, "Team Lead");
                 }
+                oldTeamLead.TeamLedId = null;
+                newTeamLead.TeamLedId = data.Team.Id;
             }
 
             _db.Teams.Update(data.Team);
