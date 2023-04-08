@@ -16,16 +16,6 @@ namespace VacationManager.Controllers
             _userManager = userManager;
             _db = db;
         }
-        //public IActionResult Index(int? page = 1, char? pageSize = 's')
-        //{
-        //    List<Team> data = new List<Team>();
-        //    if (page.Value!=1)
-        //    {
-
-
-        //    }
-        //    return View(_db.Teams);
-        //}
         public async Task<IActionResult> Index()
         {
             List<Team> data = new List<Team>();
@@ -165,7 +155,7 @@ namespace VacationManager.Controllers
             _db.Teams.Remove(teamToDelete);
             await _db.SaveChangesAsync();
 
-            return RedirectToAction("index");
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Edit(int id)

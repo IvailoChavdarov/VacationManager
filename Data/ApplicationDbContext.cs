@@ -31,7 +31,7 @@ namespace VacationManager.Data
                 .HasOne(team => team.Project)
                 .WithMany(project => project.TeamsAtWork)
                 .HasForeignKey(team=>team.ProjectId)
-                .OnDelete(DeleteBehavior.ClientSetNull); ;
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Holiday>()
                 .HasOne(holiday => holiday.Requester)
@@ -48,17 +48,6 @@ namespace VacationManager.Data
             modelBuilder.Entity<Team>()
                 .Property(team => team.ProjectId)
                 .IsRequired(false);
-
-            IdentityRole CEORole = new IdentityRole("CEO");
-            CEORole.NormalizedName = CEORole.Name.ToUpper();
-
-
-            modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole("CEO"),
-                new IdentityRole("Developer"),
-                new IdentityRole("Team Lead"),
-                new IdentityRole("Unassigned")
-            );
         }
 
         public DbSet<Team> Teams { get; set; }

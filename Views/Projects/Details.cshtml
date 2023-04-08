@@ -1,0 +1,25 @@
+﻿@model ProjectDetailsViewModel
+<h1>@Model.Project.Name</h1>
+<table>
+    @foreach (var team in Model.Project.TeamsAtWork)
+    {
+        <tr>
+            <td>@team.Name</td>
+            <td>
+                <form asp-action="RemoveTeamFromProject" asp-route-teamId="@team.Id" asp-route-projectId="@Model.Project.Id">
+                    <input type="submit" value="Remove">
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+<form asp-action="AddTeamToProject">
+    <input asp-for="ProjectId" type="hidden" />
+    <select asp-for="TeamToAddId">
+        @foreach (Team team in Model.TeamsWithoutProject)
+        {
+            <option value="@team.Id">@team.Name</option>
+        }
+    </select>
+    <input type="submit" value="Add" />
+</form>
