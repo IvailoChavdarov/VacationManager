@@ -9,9 +9,11 @@ namespace VacationManager.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required")]
+        [StringLength(70, MinimumLength = 3, ErrorMessage = "Maximum 70 characters, minimum 3")]
         public string Name { get; set; }
 
+        [StringLength(200, MinimumLength = 3, ErrorMessage = "Maximum 200 characters, minimum 3")]
         public string Description { get; set; }
 
         public IEnumerable<Team> TeamsAtWork { get; set; }

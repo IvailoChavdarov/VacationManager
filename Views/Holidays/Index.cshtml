@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Holiday>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Your requests";
 }
 
 <h1>Your requests</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -61,12 +61,14 @@
                     @request.PatientNote
             </td>
             <td>
-                    <a asp-action="Edit" asp-route-id="@request.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@request.Id">Details</a> |
+
+                    <a asp-action="Details" asp-route-id="@request.Id" class="text-info">Details</a> 
                     @if (!request.IsApproved)
                     {
-                        <form asp-action="Delete" asp-route-id="@request.Id">
-                            <input type="submit" value="Delete"/>
+                        <span>|</span>
+                        <a asp-action="Edit" asp-route-id="@request.Id" class="text-warning">Edit</a>
+                        <form asp-action="Delete" asp-route-id="@request.Id" class="delete-button"> |
+                            <input class="text-danger" type="submit" value="Delete"/>
                         </form>
                     }
             </td>

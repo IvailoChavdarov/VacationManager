@@ -1,13 +1,13 @@
 ﻿@model List<Project>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Projects";
 }
 
-<h1>Index</h1>
+<h1>Projects</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -32,11 +32,11 @@
                 @project.Description
             </td>
             <td>
-                    <a asp-action="Edit" asp-route-id="@project.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@project.Id">Details</a> |
-                    <form asp-action="Delete" asp-route-id="@project.Id">
-                        <input type="submit" value="Delete"/>
-                    </form>
+                    <a asp-action="Edit" asp-route-id="@project.Id" class="text-warning">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@project.Id" class="text-info">Details</a> |
+                <form asp-action="Delete" asp-route-id="@project.Id" class="delete-button">
+                        <input class="text-danger" type="submit" value="Delete" />
+                </form>
             </td>
         </tr>
 }

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using VacationManager.Data;
 using VacationManager.Models;
 using VacationManager.ViewModels;
@@ -44,6 +46,8 @@ namespace VacationManager.Controllers
             data.TeamData = _db.Teams
                 .Where(x => x.Id == id)
                 .Include(x => x.Members)
+                .Include(x=>x.Leader)
+                .Include(x=>x.Project)
                 .FirstOrDefault();
 
             if (data.TeamData == null)
@@ -61,6 +65,7 @@ namespace VacationManager.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "CEO")]
         public async Task<IActionResult> AddToTeam(TeamDetailsViewModel data)
         {
             Team team = _db.Teams
@@ -91,6 +96,7 @@ namespace VacationManager.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "CEO")]
         public async Task<IActionResult> RemoveFromTeam(string userId, int teamId)
         {
             AppUser userToRemove = _db.Users
@@ -112,6 +118,7 @@ namespace VacationManager.Controllers
             return RedirectToAction("Details", new { id = teamId });
         }
 
+        [Authorize(Roles = "CEO")]
         public async Task<IActionResult> Create()
         {
             TeamCreateViewModel data = new TeamCreateViewModel();
@@ -123,6 +130,7 @@ namespace VacationManager.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "CEO")]
         public async Task<IActionResult> Create(TeamCreateViewModel data)
         {
             AppUser teamLeader = await _db.Users
@@ -146,6 +154,7 @@ namespace VacationManager.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "CEO")]
         public async Task<IActionResult> Delete(int id)
         {
             Team teamToDelete = await _db.Teams
@@ -163,6 +172,7 @@ namespace VacationManager.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "CEO")]
         public async Task<IActionResult> Edit(int id)
         {
             Team team = await _db.Teams
@@ -190,6 +200,7 @@ namespace VacationManager.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "CEO")]
         public async Task<IActionResult> Edit(TeamEditViewModel data)
         {
             if (data.OldTeamLeadId != data.Team.LeaderId)

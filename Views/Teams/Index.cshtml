@@ -7,7 +7,7 @@
 <h1>Teams</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -40,10 +40,10 @@
                 }
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@team.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@team.Id">Details</a> |
-                <form asp-action="Delete" asp-route-id="@team.Id">
-                    <input type="submit" value="Delete"/>
+                <a asp-action="Edit" asp-route-id="@team.Id" class="text-warning">Edit</a> |
+                <a asp-action="Details" asp-route-id="@team.Id" class="text-info">Details</a> |
+                <form asp-action="Delete" asp-route-id="@team.Id" class="delete-button">
+                    <input class="text-danger" type="submit" value="Delete" />
                 </form>
             </td>
         </tr>

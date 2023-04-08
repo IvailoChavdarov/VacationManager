@@ -20,17 +20,16 @@
                 <span asp-validation-for="Team.Name" class="text-danger"></span>
             </div>
             <label asp-for="Team.LeaderId" class="control-label"></label>
-            <select asp-for="Team.LeaderId">
-                        <option value="@Model.Team.Leader.Id" selected>@Model.Team.Leader.FirstName @Model.Team.Leader.LastName (current)</option>
-                        @foreach (AppUser userNotLeading in Model.UserNotLeading)
-                        {
-                            <option value="@userNotLeading.Id">@userNotLeading.FirstName @userNotLeading.LastName</option>
-                        }
+            <select asp-for="Team.LeaderId" class="form-control">
+                <option value="@Model.Team.Leader.Id" selected>@Model.Team.Leader.FirstName @Model.Team.Leader.LastName (current)</option>
+                @foreach (AppUser userNotLeading in Model.UserNotLeading)
+                {
+                    <option value="@userNotLeading.Id">@userNotLeading.FirstName @userNotLeading.LastName</option>
+                }
             </select>
             <span asp-validation-for="Team.LeaderId" class="text-danger"></span>
-            <input type="submit" value="Add"/>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
         </form>
     </div>

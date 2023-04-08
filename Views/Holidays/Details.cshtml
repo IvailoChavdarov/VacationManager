@@ -1,66 +1,76 @@
-﻿@model VacationManager.Models.Holiday
+﻿@model Holiday
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Holiday details";
 }
 
 <h1>Details</h1>
 
-<div>
+<div class="details">
     <h4>Holiday</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfRequest)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfRequest)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsHalfDay)
-        </dt>
-        <dd class = "col-sm-10">
+    <div class="row">
+        <div class="col-md-3 col-12">
+            Start date
+        </div>
+        <div class="col-md-9 col-12">
+            @Model.StartDate
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-12">
+            End date
+        </div>
+        <div class="col-md-9 col-12">
+            @Model.EndDate
+        </div>
+    </div>
+        <div class="row">
+        <div class="col-md-3 col-12">
+            Date of request
+        </div>
+        <div class="col-md-9 col-12">
+            @Model.DateOfRequest
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-12">
+            Half day
+        </div>
+        <div class="col-md-9 col-12">
             @Html.DisplayFor(model => model.IsHalfDay)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsApproved)
-        </dt>
-        <dd class = "col-sm-10">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-12">
+            Approved
+        </div>
+        <div class="col-md-9 col-12">
             @Html.DisplayFor(model => model.IsApproved)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-        <dd class = "col-sm-10">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-12">
+            Type
+        </div>
+        <div class="col-md-9 col-12">
             @Html.DisplayFor(model => model.Type)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientNote)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientNote)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Requester)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Requester.Id)
-        </dd>
-    </dl>
+        </div>
+    </div>
+    @if (!string.IsNullOrEmpty(Model.PatientNote))
+    {
+            <div class="row">
+        <div class="col-md-3 col-12">
+            Patient note
+        </div>
+        <div class="col-md-9 col-12">
+            @Model.PatientNote
+        </div>
+    </div>
+    }
+
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="text-warning">Edit</a> |
+    <a asp-action="Index" class="text-info">Back to List</a>
 </div>
