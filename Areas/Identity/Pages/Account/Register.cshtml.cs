@@ -147,7 +147,11 @@ namespace VacationManager.Areas.Identity.Pages.Account
                     {
                         await _userManager.AddToRoleAsync(user, "CEO");
                     }
-
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, "Unassigned");
+                    }
+                    await _userManager.UpdateAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(

@@ -49,6 +49,10 @@ namespace VacationManager.Data
                 .Property(team => team.ProjectId)
                 .IsRequired(false);
 
+            IdentityRole CEORole = new IdentityRole("CEO");
+            CEORole.NormalizedName = CEORole.Name.ToUpper();
+
+
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole("CEO"),
                 new IdentityRole("Developer"),

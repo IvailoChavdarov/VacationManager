@@ -1,0 +1,8 @@
+﻿@model RolesEditViewModel
+
+<h1>Role @Model.RoleName</h1>
+<form asp-action="ChangeRoleName">
+    <input asp-for="RoleId" type="hidden"/>
+    <input asp-for="RoleName"/>
+    <input type="submit" value="Change name" />
+</form>

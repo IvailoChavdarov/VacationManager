@@ -167,5 +167,59 @@ namespace VacationManager.Controllers
 
             return RedirectToAction("index");
         }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            Team team = await _db.Teams
+                            .Where(x => x.Id == id)
+                            .FirstOrDefaultAsync();
+
+            if (team == null)
+            {
+                return NotFound();
+            }
+            TeamEditViewModel data = new TeamEditViewModel();
+            data.Team = team;
+            data.Team.Leader = await _userManager.FindByIdAsync(team.LeaderId);
+            data.UserNotLeading = new List<AppUser>();
+            data.OldTeamLeadId = team.LeaderId;
+            foreach (var user in _userManager.Users)
+            {
+                if (!await _userManager.IsInRoleAsync(user, "Team Lead"))
+                {
+                    data.UserNotLeading.Add(user);
+                }
+            }
+
+            return View(data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(TeamEditViewModel data)
+        {
+            if (data.OldTeamLeadId != data.Team.LeaderId)
+            {
+                AppUser newTeamLead = await _userManager.FindByIdAsync(data.Team.LeaderId);
+                if (!await _userManager.IsInRoleAsync(newTeamLead, "Team Lead"))
+                {
+                    await _userManager.AddToRoleAsync(newTeamLead, "Team Lead");
+                }
+                if (newTeamLead.TeamId != data.Team.Id)
+                {
+                    newTeamLead.TeamId = data.Team.Id;
+                }
+
+                AppUser oldTeamLead = await _userManager.FindByIdAsync(data.OldTeamLeadId);
+                if (await _userManager.IsInRoleAsync(oldTeamLead, "Team Lead"))
+                {
+                    await _userManager.RemoveFromRoleAsync(oldTeamLead, "Team Lead");
+                }
+            }
+
+            _db.Teams.Update(data.Team);
+
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Details", new {id=data.Team.Id});
+        }
     }
 }

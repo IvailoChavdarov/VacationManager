@@ -1,0 +1,8 @@
+﻿@model Dictionary<string, int>
+@foreach(var item in Model){
+    <p>@item.Key - @item.Value members 
+        <form asp-action="Delete" asp-route-roleName="@item.Key">
+            <input type="submit" value="Delete role"/>
+        </form>
+    </p>
+}

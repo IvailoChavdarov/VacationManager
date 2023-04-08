@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using VacationManager.Data;
 using VacationManager.Models;
+using VacationManager.StaticClasses;
 
 namespace VacationManager
 {
@@ -23,6 +24,14 @@ namespace VacationManager
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+                Seeder.SeedRoles(db, roleManager).GetAwaiter().GetResult();
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

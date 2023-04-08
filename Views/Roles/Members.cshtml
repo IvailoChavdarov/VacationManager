@@ -1,0 +1,8 @@
+﻿@model RolesMembersViewModel
+<h1>@Model.RoleName members</h1>
+@foreach(var member in Model.Members){
+    <p>
+        @member.FirstName
+        @member.LastName
+    </p>
+}
