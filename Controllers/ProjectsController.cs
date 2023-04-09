@@ -19,19 +19,18 @@ namespace VacationManager.Controllers
             _db = db;
         }
 
+        //shows view with all projects
         [Authorize]
-        public IActionResult Index(int page = 1, int pageSize = 10)
+        public IActionResult Index()
         {
             List<Project> data = new List<Project>();
-            page -= 1;
             data = _db.Projects
-                .Skip(page * pageSize)
-                .Take(pageSize)
                 .ToList();
 
             return View(data);
         }
 
+        //deletes project
         [Authorize(Roles = "CEO")]
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
@@ -51,12 +50,15 @@ namespace VacationManager.Controllers
             return RedirectToAction("Index");
         }
 
+        //shows view with form for creating project
         [Authorize(Roles = "CEO")]
         public IActionResult Create()
         {
             return View();
         }
 
+
+        //creates project
         [Authorize(Roles = "CEO")]
         [HttpPost]
         public async Task<IActionResult> Create(Project project)
@@ -72,6 +74,8 @@ namespace VacationManager.Controllers
             }
         }
 
+
+        //shows view with form for editing project
         [Authorize(Roles = "CEO")]
         public IActionResult Edit(int id)
         {
@@ -86,6 +90,8 @@ namespace VacationManager.Controllers
             return View(project);
         }
 
+
+        //updates project data
         [HttpPost]
         [Authorize(Roles = "CEO")]
         public async Task<IActionResult> Edit(Project project)
@@ -102,6 +108,8 @@ namespace VacationManager.Controllers
             }
         }
 
+
+        //shows view with details of project and teams working on the project
         [Authorize]
         public async Task<IActionResult> Details(int id)
         {
@@ -128,6 +136,7 @@ namespace VacationManager.Controllers
             return View(data);
         }
 
+        //removes team from working on the project
         [HttpPost]
         [Authorize(Roles = "CEO")]
         public async Task<IActionResult> RemoveTeamFromProject(int teamId, int projectId)
@@ -157,6 +166,8 @@ namespace VacationManager.Controllers
             return RedirectToAction("Details", new { id = projectId });
         }
 
+
+        //adds team to work on the project
         [HttpPost]
         [Authorize(Roles = "CEO")]
         public async Task<IActionResult> AddTeamToProject(ProjectDetailsViewModel data)

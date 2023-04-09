@@ -20,6 +20,8 @@ namespace VacationManager.Controllers
             _db = db;
             _roleManager = roleManager;
         }
+
+        //shows view with all roles and members count
         public async Task<IActionResult> Index()   
         {
             List<IdentityRole> roles = _roleManager.Roles.ToList();
@@ -31,6 +33,8 @@ namespace VacationManager.Controllers
             }
             return View(rolesMembersCount);
         }
+        
+        //shows view listing members of given role
         public async Task<IActionResult> Members(string id)
         {
             if (await _roleManager.RoleExistsAsync(id))
@@ -43,6 +47,7 @@ namespace VacationManager.Controllers
             return NotFound();
         }
 
+        //shows view with form for editing role
         [Authorize(Roles = "CEO")]
         public async Task<IActionResult> Edit(string id)
         {
@@ -59,6 +64,7 @@ namespace VacationManager.Controllers
             return View(data);
         }
 
+        //changes name of role
         [Authorize(Roles = "CEO")]
         [HttpPost]
         public async Task<IActionResult> ChangeRoleName(RolesEditViewModel data)
@@ -78,6 +84,7 @@ namespace VacationManager.Controllers
             return RedirectToAction("Members", new {id=data.RoleName});
         }
 
+        //deletes role
         [Authorize(Roles = "CEO")]
         [HttpPost]
         public async Task<IActionResult> Delete(string roleName)
@@ -96,12 +103,14 @@ namespace VacationManager.Controllers
             return RedirectToAction("Index");
         }
 
+        //shows view with form for creating role
         [Authorize(Roles = "CEO")]
         public IActionResult Create()
         {
             return View();
         }
 
+        //updates role data
         [Authorize(Roles = "CEO")]
         [HttpPost]
         public async Task<IActionResult> CreateRole(RolesCreateViewModel data)

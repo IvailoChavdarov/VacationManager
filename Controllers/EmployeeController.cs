@@ -18,9 +18,12 @@ namespace VacationManager.Controllers
             _userManager = userManager;
             _db = db;
         }
+
+        //shows view with all users and their roles
         public async Task<IActionResult> Index()
         {
             List<AppUser> users = new List<AppUser>();
+            //sets role full name
             foreach (var user in _userManager.Users)
             {
                 if (await _userManager.IsInRoleAsync(user, "CEO"))
@@ -44,7 +47,9 @@ namespace VacationManager.Controllers
             return View(users);
         }
 
+        //deletes user by their id
         [Authorize(Roles = "CEO")]
+        [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             AppUser userToDelete = await _userManager.FindByIdAsync(id);
@@ -57,6 +62,7 @@ namespace VacationManager.Controllers
             return RedirectToAction("Index");
         }
 
+        //shows view with details for user and related data
         public async Task<IActionResult> Details(string id)
         {
             AppUser user = await _userManager.FindByIdAsync(id);
@@ -67,6 +73,7 @@ namespace VacationManager.Controllers
 
             EmployeeDetailsViewModel data = new EmployeeDetailsViewModel(); 
 
+            //shows team if user is in one
             if (user.TeamId != null)
             {
                 user.Team = _db.Teams
@@ -80,6 +87,7 @@ namespace VacationManager.Controllers
             }
             else
             {
+                //gets data for available teams for user to join
                 data.Teams = _db.Teams.ToList();
             }
 
@@ -89,6 +97,7 @@ namespace VacationManager.Controllers
             return View(data);
         }
 
+        //adds user to team
         [Authorize(Roles = "CEO")]
         [HttpPost]
         public async Task<IActionResult> AddToTeam(EmployeeDetailsViewModel data)
@@ -109,6 +118,8 @@ namespace VacationManager.Controllers
             }
 
             user.TeamId = data.TeamId;
+
+            //sets user role to developer in a team
             if (await _userManager.IsInRoleAsync(user, "Unassigned"))
             {
                 await _userManager.RemoveFromRoleAsync(user, "Unassigned");
@@ -123,6 +134,7 @@ namespace VacationManager.Controllers
             return RedirectToAction("Details", new {id=data.UserId});
         }
 
+        //removes user from team
         [Authorize(Roles = "CEO")]
         [HttpPost]
         public async Task<IActionResult> RemoveFromTeam(EmployeeDetailsViewModel data)
@@ -143,6 +155,8 @@ namespace VacationManager.Controllers
             }
 
             user.TeamId = null;
+
+            //sets user role to unassigned
             if (!await _userManager.IsInRoleAsync(user, "Unassigned"))
             {
                 await _userManager.AddToRoleAsync(user, "Unassigned");
@@ -157,6 +171,7 @@ namespace VacationManager.Controllers
             return RedirectToAction("Details", new { id = data.UserId });
         }
 
+        //shows view with form for user editing
         [Authorize(Roles = "CEO")]
         public async Task<IActionResult> Edit(string id)
         {
@@ -168,6 +183,7 @@ namespace VacationManager.Controllers
             return View(user);
         }
 
+        //updates user data
         [Authorize(Roles = "CEO")]
         [HttpPost]
         public async Task<IActionResult> Edit(AppUser data)
@@ -177,6 +193,8 @@ namespace VacationManager.Controllers
             {
                 return NotFound();
             }
+
+            //sets email and username
             if (oldUserData.Email != data.Email)
             {
                 await _userManager.SetEmailAsync(oldUserData, data.Email);
@@ -199,7 +217,9 @@ namespace VacationManager.Controllers
             }
 
             await _userManager.UpdateAsync(oldUserData);
+
             await _db.SaveChangesAsync();
+
             return RedirectToAction("Details", new { id = data.Id });
         }
     }

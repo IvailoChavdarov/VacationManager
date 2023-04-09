@@ -18,6 +18,8 @@ namespace VacationManager.Controllers
             _userManager = userManager;
             _db = db;
         }
+
+        //shows list of all teams and its leader and project
         public async Task<IActionResult> Index()
         {
             List<Team> data = new List<Team>();
@@ -40,6 +42,7 @@ namespace VacationManager.Controllers
             return View(data);
         }
 
+        //shows view with details of given team and its related data
         public async Task<IActionResult> Details(int id) {
             TeamDetailsViewModel data = new TeamDetailsViewModel();
 
@@ -64,6 +67,7 @@ namespace VacationManager.Controllers
             return View(data);
         }
 
+        //adds user to given team
         [HttpPost]
         [Authorize(Roles = "CEO")]
         public async Task<IActionResult> AddToTeam(TeamDetailsViewModel data)
@@ -95,6 +99,7 @@ namespace VacationManager.Controllers
             return RedirectToAction("Details", new {id=data.TeamId});
         }
 
+        //removes user from given team
         [HttpPost]
         [Authorize(Roles = "CEO")]
         public async Task<IActionResult> RemoveFromTeam(string userId, int teamId)
@@ -118,6 +123,7 @@ namespace VacationManager.Controllers
             return RedirectToAction("Details", new { id = teamId });
         }
 
+        //shows view with form for creating new team and gets data of potential leaders
         [Authorize(Roles = "CEO")]
         public async Task<IActionResult> Create()
         {
@@ -129,6 +135,7 @@ namespace VacationManager.Controllers
             return View(data);
         }
 
+        //creates new team
         [HttpPost]
         [Authorize(Roles = "CEO")]
         public async Task<IActionResult> Create(TeamCreateViewModel data)
@@ -153,6 +160,7 @@ namespace VacationManager.Controllers
             return RedirectToAction("Details", new {id= data.TeamToCreate.Id });
         }
 
+        //deletes team
         [HttpPost]
         [Authorize(Roles = "CEO")]
         public async Task<IActionResult> Delete(int id)
@@ -172,6 +180,7 @@ namespace VacationManager.Controllers
             return RedirectToAction("Index");
         }
 
+        //shows view with form for editing team data and new potential leaders
         [Authorize(Roles = "CEO")]
         public async Task<IActionResult> Edit(int id)
         {
@@ -199,6 +208,7 @@ namespace VacationManager.Controllers
             return View(data);
         }
 
+        //updates team data
         [HttpPost]
         [Authorize(Roles = "CEO")]
         public async Task<IActionResult> Edit(TeamEditViewModel data)
@@ -206,6 +216,7 @@ namespace VacationManager.Controllers
             if (data.OldTeamLeadId != data.Team.LeaderId)
             {
                 AppUser newTeamLead = await _userManager.FindByIdAsync(data.Team.LeaderId);
+                //sets new leader role
                 if (!await _userManager.IsInRoleAsync(newTeamLead, "Team Lead"))
                 {
                     await _userManager.AddToRoleAsync(newTeamLead, "Team Lead");
@@ -216,6 +227,7 @@ namespace VacationManager.Controllers
                 }
 
                 AppUser oldTeamLead = await _userManager.FindByIdAsync(data.OldTeamLeadId);
+                //removes old leader from leader role
                 if (await _userManager.IsInRoleAsync(oldTeamLead, "Team Lead"))
                 {
                     await _userManager.RemoveFromRoleAsync(oldTeamLead, "Team Lead");

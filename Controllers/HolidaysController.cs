@@ -23,6 +23,7 @@ namespace VacationManager.Controllers
             _db = db;
         }
 
+        //shows view with user's holiday requests
         public async Task<IActionResult> Index()
         {
             var userRequests = _db.Holidays
@@ -30,6 +31,7 @@ namespace VacationManager.Controllers
             return View(await userRequests.ToListAsync());
         }
 
+        //shows view with holiday requests to the CEO or Team Lead(from his team members)
         [Authorize(Roles = "CEO, Team Lead")]
         public async Task<IActionResult> Pending()
         {
@@ -53,6 +55,7 @@ namespace VacationManager.Controllers
             return View(requests);
         }
 
+        //shows view with details for given holiday request
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _db.Holidays == null)
@@ -71,16 +74,19 @@ namespace VacationManager.Controllers
             return View(holiday);
         }
 
+        //shows view with form for creating request
         public IActionResult Create()
         {
             return View();
         }
 
+        //creates holiday request
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Holiday holiday)
         {
             holiday.RequesterId = _userManager.GetUserId(User);
+            //sets request date to today
             holiday.DateOfRequest = DateTime.Today;
             try
             {
@@ -93,6 +99,7 @@ namespace VacationManager.Controllers
             }   
         }
 
+        //shows view with edit request form
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -108,6 +115,7 @@ namespace VacationManager.Controllers
             return View(holiday);
         }
 
+        //updates request info
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Holiday holiday)
@@ -133,6 +141,7 @@ namespace VacationManager.Controllers
 
         }
 
+        //deletes request
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -157,6 +166,7 @@ namespace VacationManager.Controllers
             }
         }
 
+        //approves request
         [Authorize(Roles = "CEO, Team Lead")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -182,6 +192,7 @@ namespace VacationManager.Controllers
             }
         }
 
+        //checks if current user has right to delete request
         private async Task<bool> HasAccessToDelete(Holiday holiday)
         {
             AppUser user = await _userManager.GetUserAsync(User);
@@ -196,6 +207,7 @@ namespace VacationManager.Controllers
             return await IsLeaderOfRequesterTeam(holiday, user);
         }
 
+        //checks if current user has right to approve request
         private async Task<bool> HasAccessToApprove(Holiday holiday)
         {
             AppUser user = await _userManager.GetUserAsync(User);
@@ -210,6 +222,7 @@ namespace VacationManager.Controllers
             return await IsLeaderOfRequesterTeam(holiday, user);
         }
 
+        //checks if user is leader of the team of the requester of holiday
         private async Task<bool> IsLeaderOfRequesterTeam(Holiday holiday, AppUser user)
         {;
             if (await _userManager.IsInRoleAsync(user, "Team Lead"))
