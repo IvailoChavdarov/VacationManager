@@ -88,3 +88,6 @@ input.text-danger{
     margin-bottom:10px;
     margin-top:10px;
 }
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background-color: #95B4BB;
+}
